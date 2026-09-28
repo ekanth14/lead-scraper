@@ -1,0 +1,22 @@
+{
+  "name": "lead-scraper",
+  "services": [
+    {
+      "name": "backend",
+      "runtime": "python3.11",
+      "root": "backend",
+      "start": "uvicorn app.main:app --host 0.0.0.0 --port 8000",
+      "envFile": ".env"
+    },
+    {
+      "name": "frontend",
+      "runtime": "static",
+      "root": "frontend",
+      "build": "npm run build",
+      "output": "dist",
+      "env": {
+        "VITE_API_URL": "$BACKEND_URL"
+      }
+    }
+  ]
+}

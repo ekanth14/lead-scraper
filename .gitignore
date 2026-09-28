@@ -1,0 +1,25 @@
+# Environment variables and secrets
+.env
+.env.local
+backend/.env
+
+# Dependencies
+node_modules/
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+venv/
+
+# Build artifacts
+frontend/dist/
+dist/
+build/
+
+# IDE and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+~$*
