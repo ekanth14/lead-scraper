@@ -1,4 +1,4 @@
-Monitor URL: https://lead-scraper-api.onrender.com/ping
+Monitor URL: https://lead-scraper-api-bqt4.onrender.com/ping
 Monitor type: HTTP(s)
 Interval: 5 minutes
 Alert when: down for 1 check

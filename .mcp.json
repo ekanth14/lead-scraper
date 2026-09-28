@@ -1,7 +1,17 @@
 {
   "mcpServers": {
     "render": {
-      "serverUrl": "https://mcp.render.com/mcp"
+      "command": "cmd.exe",
+      "args": [
+        "/c",
+        "npx",
+        "-y",
+        "@niyogi/render-mcp",
+        "start"
+      ],
+      "env": {
+        "RENDER_API_KEY": "rnd_ulLNf56uJkasIQPSCcD7Y3AvfYEo"
+      }
     },
     "supabase": {
       "serverUrl": "https://mcp.supabase.com/mcp?project_ref=niuwukqxobdrodwkutad&features=docs%2Caccount%2Cdatabase%2Cdebugging%2Cdevelopment%2Cfunctions%2Cbranching"
