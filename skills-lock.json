@@ -1,6 +1,132 @@
 {
   "version": 1,
   "skills": {
+    "render-background-workers": {
+      "source": "render-oss/skills",
+      "sourceType": "github",
+      "skillPath": "skills/render-background-workers/SKILL.md",
+      "computedHash": "b4769cb4165a7b5ad648833534434e8b04630bb7d520f789e15022dcabc2cb6a"
+    },
+    "render-blueprints": {
+      "source": "render-oss/skills",
+      "sourceType": "github",
+      "skillPath": "skills/render-blueprints/SKILL.md",
+      "computedHash": "490a24f37a044e0b4b014e91398df383c8606a351fe91d1fca212f9d42470545"
+    },
+    "render-cli": {
+      "source": "render-oss/skills",
+      "sourceType": "github",
+      "skillPath": "skills/render-cli/SKILL.md",
+      "computedHash": "4cc7ddc8820c7bdd4808cc70bdffe00b13fab93847675d0a75ef683e13de68f2"
+    },
+    "render-cron-jobs": {
+      "source": "render-oss/skills",
+      "sourceType": "github",
+      "skillPath": "skills/render-cron-jobs/SKILL.md",
+      "computedHash": "ce260b4db337576a96cb139d3a8a492256dac5dd28d1823828ccbf0ba0b51653"
+    },
+    "render-debug": {
+      "source": "render-oss/skills",
+      "sourceType": "github",
+      "skillPath": "skills/render-debug/SKILL.md",
+      "computedHash": "c32b42fed7075b5c5987cf39cb13fd60212a94b1b538a090284ba1c7dde9a4a8"
+    },
+    "render-deploy": {
+      "source": "render-oss/skills",
+      "sourceType": "github",
+      "skillPath": "skills/render-deploy/SKILL.md",
+      "computedHash": "8cdaf98a95d1aed2eeeb534e7e5dae0529646bd1445584781a6aad399c33b572"
+    },
+    "render-disks": {
+      "source": "render-oss/skills",
+      "sourceType": "github",
+      "skillPath": "skills/render-disks/SKILL.md",
+      "computedHash": "006bb1ff8111386e5d7896e59d7b01d8e9867524ded6db980cf836b44e818326"
+    },
+    "render-docker": {
+      "source": "render-oss/skills",
+      "sourceType": "github",
+      "skillPath": "skills/render-docker/SKILL.md",
+      "computedHash": "84e3ce2061793b4e2fd1aff0f0e3da3d467a0ec888f8237f3283a9c3a2d16c89"
+    },
+    "render-domains": {
+      "source": "render-oss/skills",
+      "sourceType": "github",
+      "skillPath": "skills/render-domains/SKILL.md",
+      "computedHash": "75d982d22588d84be127475ca33935b04d811ba2665c97f487938084440730df"
+    },
+    "render-env-vars": {
+      "source": "render-oss/skills",
+      "sourceType": "github",
+      "skillPath": "skills/render-env-vars/SKILL.md",
+      "computedHash": "2c00a191626fd792a78d95d42b04f947d4a6bb8f7b856389ce7f33779d12c06b"
+    },
+    "render-keyvalue": {
+      "source": "render-oss/skills",
+      "sourceType": "github",
+      "skillPath": "skills/render-keyvalue/SKILL.md",
+      "computedHash": "6ec8257de654877719d3fd3fb723e9f65a9c1b85bf3b0963024308b7669049cc"
+    },
+    "render-mcp": {
+      "source": "render-oss/skills",
+      "sourceType": "github",
+      "skillPath": "skills/render-mcp/SKILL.md",
+      "computedHash": "31def69b1243bc0c860ce82b3aaa74f3b27b1834066cacaea52f935e9a5a3433"
+    },
+    "render-migrate-from-heroku": {
+      "source": "render-oss/skills",
+      "sourceType": "github",
+      "skillPath": "skills/render-migrate-from-heroku/SKILL.md",
+      "computedHash": "e96549972b72af8da9f7d17564bfb6c88d4c2987d9e9248f273f9ac128f09935"
+    },
+    "render-monitor": {
+      "source": "render-oss/skills",
+      "sourceType": "github",
+      "skillPath": "skills/render-monitor/SKILL.md",
+      "computedHash": "4920e6e0ef9c86c0afd5f01723d1b86be20592fa90dc07a5cf81b89f61955c4d"
+    },
+    "render-networking": {
+      "source": "render-oss/skills",
+      "sourceType": "github",
+      "skillPath": "skills/render-networking/SKILL.md",
+      "computedHash": "8ce029eddc455dbec301cdf3b7a0d268b6409293fc8ec1076d53d336fab14d73"
+    },
+    "render-postgres": {
+      "source": "render-oss/skills",
+      "sourceType": "github",
+      "skillPath": "skills/render-postgres/SKILL.md",
+      "computedHash": "6e60e33506e66b9fa82572e4776486c0dbb2dbbc65640bceb09e744af5d0b099"
+    },
+    "render-private-services": {
+      "source": "render-oss/skills",
+      "sourceType": "github",
+      "skillPath": "skills/render-private-services/SKILL.md",
+      "computedHash": "d3b879b68788b11a95462638e49a26eefe9a52d241dda8eebb766783fd28dc0a"
+    },
+    "render-scaling": {
+      "source": "render-oss/skills",
+      "sourceType": "github",
+      "skillPath": "skills/render-scaling/SKILL.md",
+      "computedHash": "4f775328f406a71f6b4ba215cf4f990d526f800e444b192d3e7e9bb2bd1dcd5e"
+    },
+    "render-static-sites": {
+      "source": "render-oss/skills",
+      "sourceType": "github",
+      "skillPath": "skills/render-static-sites/SKILL.md",
+      "computedHash": "a891e8cbd6e2d44fc20bc8afa276d798214e8ce38cef228aea31a5a147908c8d"
+    },
+    "render-web-services": {
+      "source": "render-oss/skills",
+      "sourceType": "github",
+      "skillPath": "skills/render-web-services/SKILL.md",
+      "computedHash": "3a514342adabd7cb5f282dae53122fbfa66db3df6075619ee9a88aba1872bc8c"
+    },
+    "render-workflows": {
+      "source": "render-oss/skills",
+      "sourceType": "github",
+      "skillPath": "skills/render-workflows/SKILL.md",
+      "computedHash": "2c0aaf648e911a70f2ed7f92284c34add1b39afc26fc50285faf2dcbf33cbad7"
+    },
     "supabase": {
       "source": "supabase/agent-skills",
       "sourceType": "github",
