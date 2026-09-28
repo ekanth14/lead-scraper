@@ -5,7 +5,7 @@ def score_lead(lead: dict, brand: str, niche: str, source: str) -> dict:
     signals = []
     
     website = lead.get("website")
-    if not website or str(website).strip().lower() == "none found":
+    if not website or str(website).strip().lower() in ["", "none", "none found", "null"]:
         score += 28
         signals.append("No website found")
         

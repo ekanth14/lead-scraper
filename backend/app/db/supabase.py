@@ -95,25 +95,43 @@ def delete_lead(lead_id: str) -> bool:
 
 
 def get_stats(brand: str) -> dict[str, Any]:
-    """Return hot/warm/cold counts and by-source breakdown."""
+    """Return hot/warm/cold counts, website counts, and by-source breakdown."""
     client = get_client()
     if not client:
-        return {"hot": 0, "warm": 0, "cold": 0, "total": 0, "by_source": {"maps": 0, "instagram": 0, "linkedin": 0}}
+        return {"hot": 0, "warm": 0, "cold": 0, "total": 0, "no_website": 0, "has_website": 0, "by_source": {"maps": 0, "instagram": 0, "linkedin": 0}}
     try:
-        result = client.table("leads").select("score,source").eq("brand", brand).execute()
+        result = client.table("leads").select("score,source,website").eq("brand", brand).execute()
         rows = result.data
         hot = sum(1 for r in rows if (r.get("score") or 0) >= 70)
         warm = sum(1 for r in rows if 45 <= (r.get("score") or 0) < 70)
         cold = sum(1 for r in rows if (r.get("score") or 0) < 45)
+
+        def _has_web(w):
+            if not w:
+                return False
+            sw = str(w).strip().lower()
+            return sw not in ["", "none", "none found", "null"]
+
+        has_web_count = sum(1 for r in rows if _has_web(r.get("website")))
+        no_web_count = len(rows) - has_web_count
+
         by_source = {"maps": 0, "instagram": 0, "linkedin": 0}
         for r in rows:
             src = r.get("source", "")
             if src in by_source:
                 by_source[src] += 1
-        return {"hot": hot, "warm": warm, "cold": cold, "total": len(rows), "by_source": by_source}
+        return {
+            "hot": hot,
+            "warm": warm,
+            "cold": cold,
+            "total": len(rows),
+            "no_website": no_web_count,
+            "has_website": has_web_count,
+            "by_source": by_source,
+        }
     except Exception as e:
         logger.error("Failed to get stats: %s", e)
-        return {"hot": 0, "warm": 0, "cold": 0, "total": 0, "by_source": {"maps": 0, "instagram": 0, "linkedin": 0}}
+        return {"hot": 0, "warm": 0, "cold": 0, "total": 0, "no_website": 0, "has_website": 0, "by_source": {"maps": 0, "instagram": 0, "linkedin": 0}}
 
 
 def log_outreach(lead_id: str, brand: str, dm_text: str) -> Optional[dict]:

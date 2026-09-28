@@ -4,6 +4,12 @@ import { useBrandStore } from '../store/useBrand'
 import { useToast } from './Toast'
 import { X, Copy, RefreshCw, ExternalLink } from 'lucide-react'
 
+const hasWebsite = (website) => {
+  if (!website) return false
+  const trimmed = String(website).trim().toLowerCase()
+  return trimmed !== '' && trimmed !== 'none found' && trimmed !== 'none' && trimmed !== 'null'
+}
+
 export default function OutreachModal({ lead, onClose }) {
   const brand = useBrandStore((state) => state.brand)
   const [draft, setDraft] = useState('')
@@ -65,17 +71,42 @@ export default function OutreachModal({ lead, onClose }) {
               {lead.rating && <span>⭐ {lead.rating}</span>}
               {lead.followers && <span>👥 {lead.followers}</span>}
             </div>
-            
-            <div className="mt-3 flex gap-3">
-              {lead.website && (
-                <a href={lead.website} target="_blank" rel="noreferrer" className="text-xs flex items-center gap-1 text-[var(--accent)] hover:underline">
-                  <ExternalLink size={12} /> Website
-                </a>
-              )}
-              {lead.phone && (
-                <span className="text-xs flex items-center gap-1 text-muted">
-                  📞 {lead.phone}
-                </span>
+
+            {/* Prominent Website Row */}
+            <div className="mt-4 p-3 bg-surface/80 border border-border rounded-xl">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs font-semibold text-muted uppercase tracking-wider">Website Details</span>
+                {lead.phone && (
+                  <span className="text-xs text-muted flex items-center gap-1">
+                    📞 {lead.phone}
+                  </span>
+                )}
+              </div>
+
+              {hasWebsite(lead.website) ? (
+                <div className="flex items-center gap-2.5 flex-wrap">
+                  <span className="text-xs font-bold text-[#22D07A] bg-[#22D07A]/10 border border-[#22D07A]/30 px-2.5 py-1 rounded-full">
+                    ✅ Active website
+                  </span>
+                  <a
+                    href={lead.website.startsWith('http') ? lead.website : `https://${lead.website}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-sm font-medium text-[#22D07A] hover:underline flex items-center gap-1"
+                  >
+                    <ExternalLink size={14} />
+                    {lead.website}
+                  </a>
+                </div>
+              ) : (
+                <div className="space-y-1">
+                  <div className="text-base font-bold text-[#FF5370] flex items-center gap-1.5">
+                    <span>🔴</span> No website found
+                  </div>
+                  <div className="text-xs text-muted">
+                    → Perfect pitch: offer {brand === 'orv' ? 'Orvyqmedia digital presence package' : 'Zien Technologies website package'}
+                  </div>
+                </div>
               )}
             </div>
           </div>

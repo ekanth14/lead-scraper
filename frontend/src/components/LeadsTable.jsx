@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useBrandStore } from '../store/useBrand'
 import { fetchLeads, exportLeads, deleteLead } from '../api/client'
@@ -6,16 +6,32 @@ import { Download, Trash2, Send } from 'lucide-react'
 import { useToast } from './Toast'
 import { useQueryClient } from '@tanstack/react-query'
 
+const hasWebsite = (website) => {
+  if (!website) return false
+  const trimmed = String(website).trim().toLowerCase()
+  return trimmed !== '' && trimmed !== 'none found' && trimmed !== 'none' && trimmed !== 'null'
+}
+
 export default function LeadsTable({ onLeadClick }) {
   const { brand, source } = useBrandStore()
   const { error, success } = useToast()
   const queryClient = useQueryClient()
+  const [websiteFilter, setWebsiteFilter] = useState('all') // 'all' | 'no-website' | 'has-website'
 
   const { data, isLoading } = useQuery({
     queryKey: ['leads', brand, source],
     queryFn: () => fetchLeads({ brand, source, limit: 100 }),
   })
   const leads = data?.leads ?? []
+
+  const noWebsiteCount = leads.filter((l) => !hasWebsite(l.website)).length
+  const hasWebsiteCount = leads.filter((l) => hasWebsite(l.website)).length
+
+  const filteredLeads = leads.filter((lead) => {
+    if (websiteFilter === 'no-website') return !hasWebsite(lead.website)
+    if (websiteFilter === 'has-website') return hasWebsite(lead.website)
+    return true
+  })
 
   const handleExport = async () => {
     try {
@@ -70,32 +86,86 @@ export default function LeadsTable({ onLeadClick }) {
             <tr>
               <th className="px-4 py-3 font-medium">Business</th>
               <th className="px-4 py-3 font-medium">Location / Info</th>
+              <th className="px-4 py-3 font-medium">Website</th>
               <th className="px-4 py-3 font-medium">Source</th>
               <th className="px-4 py-3 font-medium">Score</th>
               <th className="px-4 py-3 font-medium text-right">Actions</th>
             </tr>
+            <tr className="bg-surface/90 border-t border-border">
+              <td colSpan="6" className="px-4 py-2">
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setWebsiteFilter('all')}
+                    className={`px-3 py-1 rounded-full text-xs transition-colors ${
+                      websiteFilter === 'all'
+                        ? 'bg-[var(--accent)] text-white font-medium shadow-sm'
+                        : 'bg-transparent text-muted hover:text-white border border-border hover:border-muted'
+                    }`}
+                  >
+                    All ({leads.length})
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setWebsiteFilter('no-website')}
+                    className={`px-3 py-1 rounded-full text-xs transition-colors flex items-center gap-1.5 ${
+                      websiteFilter === 'no-website'
+                        ? 'bg-[var(--accent)] text-white font-medium shadow-sm'
+                        : 'bg-transparent text-muted hover:text-white border border-border hover:border-muted'
+                    }`}
+                  >
+                    <span>🔴</span> No Website ({noWebsiteCount})
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setWebsiteFilter('has-website')}
+                    className={`px-3 py-1 rounded-full text-xs transition-colors flex items-center gap-1.5 ${
+                      websiteFilter === 'has-website'
+                        ? 'bg-[var(--accent)] text-white font-medium shadow-sm'
+                        : 'bg-transparent text-muted hover:text-white border border-border hover:border-muted'
+                    }`}
+                  >
+                    <span>✅</span> Has Website ({hasWebsiteCount})
+                  </button>
+                </div>
+              </td>
+            </tr>
           </thead>
           <tbody className="divide-y divide-border">
             {isLoading ? (
-              <tr><td colSpan="5" className="p-8 text-center text-muted">Loading...</td></tr>
-            ) : leads.length === 0 ? (
+              <tr><td colSpan="6" className="p-8 text-center text-muted">Loading...</td></tr>
+            ) : filteredLeads.length === 0 ? (
               <tr>
-                <td colSpan="5" className="p-8 text-center text-muted">
-                  {source === 'maps' ? "Search for local businesses by niche and city" :
-                   source === 'instagram' ? "Find businesses by hashtag using Apify" :
-                   source === 'linkedin' ? "Find companies and founders by keyword" :
-                   "Start scraping to find leads"}
+                <td colSpan="6" className="p-8 text-center text-muted">
+                  {leads.length === 0 ? (
+                    source === 'maps' ? "Search for local businesses by niche and city" :
+                    source === 'instagram' ? "Find businesses by hashtag using Apify" :
+                    source === 'linkedin' ? "Find companies and founders by keyword" :
+                    "Start scraping to find leads"
+                  ) : (
+                    websiteFilter === 'no-website' ? "No leads without a website found" : "No leads with a website found"
+                  )}
                 </td>
               </tr>
             ) : (
-              leads.map((lead) => (
+              filteredLeads.map((lead) => (
                 <tr
                   key={lead.id}
                   onClick={() => onLeadClick(lead)}
                   className="hover:bg-surface/50 cursor-pointer transition-colors"
                 >
                   <td className="px-4 py-3">
-                    <div className="font-medium text-white">{lead.name}</div>
+                    <div className="font-medium text-white flex items-center gap-1.5">
+                      <span>{lead.name}</span>
+                      {!hasWebsite(lead.website) && (
+                        <span
+                          title={brand === 'orv' ? 'No website — hot lead for Orvyqmedia' : 'No website — hot lead for Zien Technologies'}
+                          className="cursor-help text-sm"
+                        >
+                          🔥
+                        </span>
+                      )}
+                    </div>
                     <div className="text-xs text-muted mt-0.5">{lead.category || 'Business'}</div>
                   </td>
                   <td className="px-4 py-3">
@@ -103,6 +173,44 @@ export default function LeadsTable({ onLeadClick }) {
                     <div className="text-xs text-muted mt-0.5">
                       {lead.rating ? `⭐ ${lead.rating}` : lead.followers ? `👥 ${lead.followers}` : ''}
                     </div>
+                  </td>
+                  <td className="px-4 py-3">
+                    {hasWebsite(lead.website) ? (
+                      <a
+                        href={lead.website.startsWith('http') ? lead.website : `https://${lead.website}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        style={{
+                          background: 'rgba(34, 208, 122, 0.14)',
+                          color: '#22D07A',
+                          border: '1px solid rgba(34, 208, 122, 0.3)',
+                          fontSize: '11px',
+                          fontWeight: 700,
+                          padding: '3px 10px',
+                          borderRadius: '20px',
+                        }}
+                        className="inline-flex items-center gap-1 hover:opacity-80 transition-opacity"
+                      >
+                        ✅ Has Website
+                      </a>
+                    ) : (
+                      <span
+                        title="No website = easy pitch"
+                        style={{
+                          background: 'rgba(255, 83, 112, 0.14)',
+                          color: '#FF5370',
+                          border: '1px solid rgba(255, 83, 112, 0.3)',
+                          fontSize: '11px',
+                          fontWeight: 700,
+                          padding: '3px 10px',
+                          borderRadius: '20px',
+                        }}
+                        className="inline-flex items-center gap-1 cursor-help"
+                      >
+                        🔴 No Website
+                      </span>
+                    )}
                   </td>
                   <td className="px-4 py-3">
                     <span className="bg-bg border border-border px-2 py-1 rounded text-xs text-muted uppercase">

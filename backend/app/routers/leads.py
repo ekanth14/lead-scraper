@@ -45,7 +45,20 @@ async def export_leads(
     if not leads:
         raise HTTPException(status_code=404, detail="No leads found for export")
 
+    def _has_web(w):
+        if not w or pd.isna(w):
+            return False
+        sw = str(w).strip().lower()
+        return sw not in ["", "none", "none found", "null"]
+
     df = pd.DataFrame(leads)
+    if "website" in df.columns:
+        df["Website Status"] = df["website"].apply(lambda w: "Has Website" if _has_web(w) else "No Website")
+        df["Website URL"] = df["website"].apply(lambda w: str(w).strip() if _has_web(w) else "")
+    else:
+        df["Website Status"] = "No Website"
+        df["Website URL"] = ""
+
     buffer = io.StringIO()
     df.to_csv(buffer, index=False)
     buffer.seek(0)
