@@ -171,12 +171,17 @@ app.include_router(outreach.router)
 
 
 # ── Health & Keep-Alive Endpoints ────────────────────────────────
-@app.get("/health", tags=["health"])
+@app.api_route("/", methods=["GET", "HEAD"], tags=["health"])
+async def root():
+    return {"status": "ok", "service": "lead-scraper-api", "version": "1.0.0"}
+
+
+@app.api_route("/health", methods=["GET", "HEAD"], tags=["health"])
 async def health_check():
     return {"status": "ok", "version": "1.0.0"}
 
 
-@app.get("/ping", tags=["keep-alive"])
+@app.api_route("/ping", methods=["GET", "HEAD"], tags=["keep-alive"])
 def ping():
     """Keep-alive endpoint pinged every 5 min by UptimeRobot to prevent Render free-tier spin down."""
     return {"pong": True}
