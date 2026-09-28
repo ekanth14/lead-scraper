@@ -8,7 +8,7 @@ class ScrapeRequest(BaseModel):
     """Request body for all /scrape/* routes."""
     niche: str = Field(..., min_length=1, description="Search niche, e.g. 'restaurant'")
     city: str = Field("Bangalore", description="City to search in")
-    api_key: str = Field(..., min_length=1, description="Google Maps API key or Apify token")
+    api_key: Optional[str] = Field(None, description="Optional override API key or Apify token")
     brand: str = Field(..., pattern="^(orv|zien)$", description="Brand: 'orv' or 'zien'")
 
 

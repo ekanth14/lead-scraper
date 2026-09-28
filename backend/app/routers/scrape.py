@@ -6,6 +6,7 @@ from fastapi import APIRouter, HTTPException, Request
 from slowapi import Limiter
 from slowapi.util import get_remote_address
 
+from app.config import settings
 from app.models.lead import ScrapeRequest
 from app.services import maps, instagram, linkedin
 from app.db.supabase import save_leads
@@ -42,11 +43,18 @@ async def scrape_maps(request: Request, body: ScrapeRequest):
             detail="Daily limit reached, resets at midnight",
         )
 
+    api_key = (body.api_key or "").strip() or settings.GOOGLE_MAPS_API_KEY
+    if not api_key:
+        raise HTTPException(
+            status_code=400,
+            detail="Google Maps API key is required. Please set GOOGLE_MAPS_API_KEY on the server or enter it in the search bar.",
+        )
+
     try:
         leads = await maps.fetch(
             niche=body.niche,
             city=body.city,
-            api_key=body.api_key,
+            api_key=api_key,
             brand=body.brand,
         )
         saved = save_leads(leads, body.brand)
@@ -67,13 +75,20 @@ async def scrape_instagram(request: Request, body: ScrapeRequest):
             detail="Daily limit reached, resets at midnight",
         )
 
+    token = (body.api_key or "").strip() or settings.APIFY_TOKEN
+    if not token:
+        raise HTTPException(
+            status_code=400,
+            detail="Apify Token is required for Instagram. Please set APIFY_TOKEN on the server or enter it in the search bar.",
+        )
+
     APIFY_CALLS_TODAY += 1
 
     try:
         leads = await instagram.fetch(
             niche=body.niche,
             city=body.city,
-            token=body.api_key,
+            token=token,
             brand=body.brand,
         )
         saved = save_leads(leads, body.brand)
@@ -94,13 +109,20 @@ async def scrape_linkedin(request: Request, body: ScrapeRequest):
             detail="Daily limit reached, resets at midnight",
         )
 
+    token = (body.api_key or "").strip() or settings.APIFY_TOKEN
+    if not token:
+        raise HTTPException(
+            status_code=400,
+            detail="Apify Token is required for LinkedIn. Please set APIFY_TOKEN on the server or enter it in the search bar.",
+        )
+
     APIFY_CALLS_TODAY += 1
 
     try:
         leads = await linkedin.fetch(
             niche=body.niche,
             city=body.city,
-            token=body.api_key,
+            token=token,
             brand=body.brand,
         )
         saved = save_leads(leads, body.brand)

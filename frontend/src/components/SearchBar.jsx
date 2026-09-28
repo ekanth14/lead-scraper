@@ -19,7 +19,6 @@ export default function SearchBar() {
   const handleSearch = async (e) => {
     e.preventDefault()
     if (!niche) return error('Please enter a niche')
-    if (!apiKey && targetSource !== 'maps') return error('API key required for this source')
 
     setLoading(true)
     try {
@@ -28,9 +27,9 @@ export default function SearchBar() {
         niche,
         city,
         brand,
-        apiKey
+        apiKey: apiKey.trim() || undefined
       })
-      success(`Successfully scraped leads!`)
+      success(`Successfully scraped ${data.count || ''} leads!`)
       // Invalidate queries to refresh tables and stats
       queryClient.invalidateQueries({ queryKey: ['leads'] })
       queryClient.invalidateQueries({ queryKey: ['stats'] })
@@ -80,12 +79,12 @@ export default function SearchBar() {
           </select>
         </div>
         <div className="w-full md:w-48">
-          <label className="block text-xs font-medium text-muted mb-1">API Key</label>
+          <label className="block text-xs font-medium text-muted mb-1">API Key (Optional)</label>
           <input
             type="password"
             value={apiKey}
             onChange={(e) => setApiKey(e.target.value)}
-            placeholder="Required for IG/LI"
+            placeholder="Uses server key by default"
             className="w-full bg-bg border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[var(--accent)] text-white"
           />
         </div>
