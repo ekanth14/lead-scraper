@@ -1,47 +1,66 @@
--- Lead Scraper — Supabase Setup
--- Paste this into the Supabase SQL Editor and click Run.
+-- Lead Scraper - Supabase SQL Setup
+-- Dual-brand Lead Scraper for "orv" and "zien"
 
--- 1. leads table
+-- 1. Free-Tier Guard: usage table
+CREATE TABLE IF NOT EXISTS usage (
+    month text PRIMARY KEY,
+    calls integer NOT NULL DEFAULT 0
+);
+
+-- RPC for atomic usage increment
+CREATE OR REPLACE FUNCTION increment_usage(p_month text, p_count int)
+RETURNS int AS $$
+DECLARE
+    v_calls int;
+BEGIN
+    INSERT INTO usage (month, calls)
+    VALUES (p_month, p_count)
+    ON CONFLICT (month)
+    DO UPDATE SET calls = usage.calls + p_count
+    RETURNING calls INTO v_calls;
+    RETURN v_calls;
+END;
+$$ LANGUAGE plpgsql;
+
+-- 2. leads table
 CREATE TABLE IF NOT EXISTS leads (
-  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  brand text NOT NULL,           -- 'orv' or 'zien'
-  source text NOT NULL,          -- 'maps', 'instagram', 'linkedin'
-  name text NOT NULL,
-  category text,
-  address text,
-  city text,
-  rating numeric,
-  reviews integer,
-  website text,
-  phone text,
-  followers text,
-  score integer,
-  why text,
-  outreach_dm text,
-  niche text,
-  created_at timestamptz DEFAULT now(),
-  UNIQUE (name, address, brand)
+    id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+    place_id text UNIQUE NOT NULL,
+    brand text NOT NULL,              -- 'orv' or 'zien'
+    niche text,
+    name text NOT NULL,
+    address text,
+    phone text,
+    website text,
+    website_status text NOT NULL DEFAULT 'none',  -- 'none', 'social_only', 'has_website'
+    rating numeric,
+    reviews integer,
+    score integer NOT NULL DEFAULT 40,
+    label text NOT NULL DEFAULT 'cold',           -- 'hot', 'warm', 'cold'
+    why text,
+    maps_url text,
+    source text DEFAULT 'maps',
+    category text,
+    city text,
+    followers text,
+    outreach_dm text,
+    created_at timestamptz DEFAULT now()
 );
 
--- 2. outreach_log table
-CREATE TABLE IF NOT EXISTS outreach_log (
-  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  lead_id uuid REFERENCES leads(id) ON DELETE CASCADE,
-  brand text,
-  dm_text text,
-  created_at timestamptz DEFAULT now()
-);
-
--- 3. Indexes
+-- 3. Indexes for fast filtering and ranking
+CREATE INDEX IF NOT EXISTS idx_leads_place_id ON leads(place_id);
 CREATE INDEX IF NOT EXISTS idx_leads_brand ON leads(brand);
-CREATE INDEX IF NOT EXISTS idx_leads_source ON leads(source);
+CREATE INDEX IF NOT EXISTS idx_leads_website_status ON leads(website_status);
+CREATE INDEX IF NOT EXISTS idx_leads_label ON leads(label);
 CREATE INDEX IF NOT EXISTS idx_leads_score ON leads(score DESC);
 CREATE INDEX IF NOT EXISTS idx_leads_created ON leads(created_at DESC);
-CREATE INDEX IF NOT EXISTS idx_outreach_log_lead_id ON outreach_log(lead_id);
 
--- 4. Row Level Security
+-- 4. Row Level Security (RLS)
+ALTER TABLE usage ENABLE ROW LEVEL SECURITY;
 ALTER TABLE leads ENABLE ROW LEVEL SECURITY;
-ALTER TABLE outreach_log ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY "allow all" ON leads FOR ALL USING (true);
-CREATE POLICY "allow all" ON outreach_log FOR ALL USING (true);
+DROP POLICY IF EXISTS "allow all usage" ON usage;
+CREATE POLICY "allow all usage" ON usage FOR ALL USING (true);
+
+DROP POLICY IF EXISTS "allow all leads" ON leads;
+CREATE POLICY "allow all leads" ON leads FOR ALL USING (true);

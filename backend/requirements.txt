@@ -1,11 +1,8 @@
 fastapi
 uvicorn[standard]
 httpx
-apify-client
-anthropic
 supabase
 pandas
 python-dotenv
 pydantic
 pydantic-settings
-slowapi
