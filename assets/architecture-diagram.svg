@@ -1,0 +1,211 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 620" width="100%" height="100%">
+  <defs>
+    <linearGradient id="archBg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0B0F19" />
+      <stop offset="100%" stop-color="#050811" />
+    </linearGradient>
+    <linearGradient id="boxFastAPI" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#059669" />
+      <stop offset="100%" stop-color="#10B981" />
+    </linearGradient>
+    <linearGradient id="boxReact" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0284C7" />
+      <stop offset="100%" stop-color="#38BDF8" />
+    </linearGradient>
+    <linearGradient id="boxSupa" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#15803D" />
+      <stop offset="100%" stop-color="#22C55E" />
+    </linearGradient>
+    <linearGradient id="boxGoogle" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#DC2626" />
+      <stop offset="100%" stop-color="#F59E0B" />
+    </linearGradient>
+    <linearGradient id="boxClaude" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#7C3AED" />
+      <stop offset="100%" stop-color="#C084FC" />
+    </linearGradient>
+  </defs>
+
+  <style>
+    .sans { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+    .mono { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; }
+  </style>
+
+  <!-- Background Canvas -->
+  <rect width="1100" height="620" rx="16" fill="url(#archBg)" stroke="#1E293B" stroke-width="2" />
+
+  <!-- Diagram Title -->
+  <g transform="translate(50, 40)">
+    <text x="0" y="0" fill="#F8FAFC" class="sans" font-size="24" font-weight="800">
+      SYSTEM ARCHITECTURE &amp; DATA FLOW
+    </text>
+    <text x="0" y="24" fill="#94A3B8" class="sans" font-size="13">
+      Dual-Brand Lead Generation, Automated Qualification &amp; Free-Tier Protection Engine
+    </text>
+  </g>
+
+  <!-- ── LAYER 1: CLIENT FRONTEND ──────────────────────── -->
+  <g transform="translate(50, 95)">
+    <rect width="280" height="480" rx="12" fill="#0F172A" stroke="#0284C7" stroke-width="1.5" />
+    <rect width="280" height="38" rx="12" fill="url(#boxReact)" />
+    <text x="140" y="24" fill="#FFFFFF" class="sans" font-size="14" font-weight="800" text-anchor="middle">
+      CLIENT LAYER (Vercel)
+    </text>
+
+    <!-- Sub-components -->
+    <g transform="translate(18, 55)">
+      <rect width="244" height="65" rx="8" fill="#1E293B" stroke="#334155" stroke-width="1" />
+      <text x="14" y="24" fill="#38BDF8" class="sans" font-size="13" font-weight="700">React 18 + Vite SPA</text>
+      <text x="14" y="44" fill="#94A3B8" class="sans" font-size="11">Tailwind CSS · Lucide Icons</text>
+    </g>
+
+    <g transform="translate(18, 130)">
+      <rect width="244" height="65" rx="8" fill="#1E293B" stroke="#334155" stroke-width="1" />
+      <text x="14" y="24" fill="#F8FAFC" class="sans" font-size="13" font-weight="700">Dual-Brand Engine</text>
+      <text x="14" y="44" fill="#A5B4FC" class="sans" font-size="11">Orvyqmedia (Indigo) / Zien (Cyan)</text>
+    </g>
+
+    <g transform="translate(18, 205)">
+      <rect width="244" height="65" rx="8" fill="#1E293B" stroke="#334155" stroke-width="1" />
+      <text x="14" y="24" fill="#F8FAFC" class="sans" font-size="13" font-weight="700">State &amp; Async Query</text>
+      <text x="14" y="44" fill="#94A3B8" class="sans" font-size="11">Zustand Store · TanStack Query v5</text>
+    </g>
+
+    <g transform="translate(18, 280)">
+      <rect width="244" height="85" rx="8" fill="#1E293B" stroke="#334155" stroke-width="1" />
+      <text x="14" y="24" fill="#F8FAFC" class="sans" font-size="13" font-weight="700">Interactive UI Elements</text>
+      <text x="14" y="44" fill="#22D07A" class="sans" font-size="11">✅ Has Website / 🔴 No Website Filter</text>
+      <text x="14" y="62" fill="#F59E0B" class="sans" font-size="11">🔥 Hot Lead Badges · Outreach Modal</text>
+      <text x="14" y="78" fill="#94A3B8" class="sans" font-size="10">Streaming CSV Exporter</text>
+    </g>
+
+    <g transform="translate(18, 375)">
+      <rect width="244" height="85" rx="8" fill="#0B0F19" stroke="#334155" stroke-width="1" />
+      <text x="14" y="22" fill="#64748B" class="mono" font-size="10">HTTP Client Request</text>
+      <text x="14" y="40" fill="#38BDF8" class="mono" font-size="11">POST /scrape/maps</text>
+      <text x="14" y="58" fill="#38BDF8" class="mono" font-size="11">GET /leads?brand=zien</text>
+      <text x="14" y="76" fill="#38BDF8" class="mono" font-size="11">GET /leads/export</text>
+    </g>
+  </g>
+
+  <!-- ── LAYER 2: FASTAPI BACKEND ──────────────────────── -->
+  <g transform="translate(410, 95)">
+    <rect width="320" height="480" rx="12" fill="#0F172A" stroke="#059669" stroke-width="1.5" />
+    <rect width="320" height="38" rx="12" fill="url(#boxFastAPI)" />
+    <text x="160" y="24" fill="#FFFFFF" class="sans" font-size="14" font-weight="800" text-anchor="middle">
+      BACKEND API (Render · Python 3.11)
+    </text>
+
+    <!-- Sub-components -->
+    <g transform="translate(18, 55)">
+      <rect width="284" height="70" rx="8" fill="#1E293B" stroke="#334155" stroke-width="1" />
+      <text x="14" y="24" fill="#34D399" class="sans" font-size="13" font-weight="700">FastAPI + Pydantic v2</text>
+      <text x="14" y="44" fill="#94A3B8" class="sans" font-size="11">Strict validation for niche, city, brand</text>
+      <text x="14" y="60" fill="#64748B" class="mono" font-size="10">SlowAPI 10/min rate limiter</text>
+    </g>
+
+    <g transform="translate(18, 135)">
+      <rect width="284" height="75" rx="8" fill="#1E293B" stroke="#334155" stroke-width="1" />
+      <text x="14" y="24" fill="#F59E0B" class="sans" font-size="13" font-weight="700">99-Point Scoring Engine</text>
+      <text x="14" y="44" fill="#94A3B8" class="sans" font-size="11">Base 40 + No Web (+30) + Rating (+10)</text>
+      <text x="14" y="60" fill="#94A3B8" class="sans" font-size="11">Reviews (+10) + Zien Niche (+10)</text>
+    </g>
+
+    <g transform="translate(18, 220)">
+      <rect width="284" height="75" rx="8" fill="#1E293B" stroke="#334155" stroke-width="1" />
+      <text x="14" y="24" fill="#F87171" class="sans" font-size="13" font-weight="700">Website Classifier</text>
+      <text x="14" y="44" fill="#94A3B8" class="sans" font-size="11">Distinguishes 'none', 'social_only'</text>
+      <text x="14" y="60" fill="#94A3B8" class="sans" font-size="11">(FB, Insta, Linktree) vs 'has_website'</text>
+    </g>
+
+    <g transform="translate(18, 305)">
+      <rect width="284" height="75" rx="8" fill="#1E293B" stroke="#EF4444" stroke-opacity="0.4" stroke-width="1" />
+      <text x="14" y="24" fill="#EF4444" class="sans" font-size="13" font-weight="800">Free-Tier Safety Guard</text>
+      <text x="14" y="44" fill="#FCA5A5" class="sans" font-size="11">Pre-checks monthly usage &lt; 900</text>
+      <text x="14" y="62" fill="#94A3B8" class="mono" font-size="10">Returns 429 if cap exceeded</text>
+    </g>
+
+    <g transform="translate(18, 390)">
+      <rect width="284" height="70" rx="8" fill="#1E293B" stroke="#334155" stroke-width="1" />
+      <text x="14" y="24" fill="#38BDF8" class="sans" font-size="13" font-weight="700">Keep-Alive Sentinel</text>
+      <text x="14" y="44" fill="#94A3B8" class="sans" font-size="11">GET/HEAD /ping for UptimeRobot</text>
+      <text x="14" y="60" fill="#22D07A" class="mono" font-size="10">Prevents free-tier spin-down</text>
+    </g>
+  </g>
+
+  <!-- ── LAYER 3: DATABASE & EXTERNAL APIS ─────────────── -->
+  <g transform="translate(810, 95)">
+    <!-- Supabase Box -->
+    <rect width="240" height="230" rx="12" fill="#0F172A" stroke="#22C55E" stroke-width="1.5" />
+    <rect width="240" height="38" rx="12" fill="url(#boxSupa)" />
+    <text x="120" y="24" fill="#FFFFFF" class="sans" font-size="13" font-weight="800" text-anchor="middle">
+      SUPABASE POSTGRESQL
+    </text>
+
+    <g transform="translate(14, 50)">
+      <rect width="212" height="52" rx="6" fill="#1E293B" stroke="#334155" stroke-width="1" />
+      <text x="10" y="20" fill="#22C55E" class="mono" font-size="11" font-weight="700">public.leads</text>
+      <text x="10" y="38" fill="#94A3B8" class="sans" font-size="10">Upsert on place_id UNIQUE</text>
+    </g>
+
+    <g transform="translate(14, 110)">
+      <rect width="212" height="52" rx="6" fill="#1E293B" stroke="#334155" stroke-width="1" />
+      <text x="10" y="20" fill="#22C55E" class="mono" font-size="11" font-weight="700">public.usage</text>
+      <text x="10" y="38" fill="#94A3B8" class="sans" font-size="10">month (PK), calls (int)</text>
+    </g>
+
+    <g transform="translate(14, 170)">
+      <rect width="212" height="48" rx="6" fill="#1E293B" stroke="#334155" stroke-width="1" />
+      <text x="10" y="20" fill="#22C55E" class="mono" font-size="11" font-weight="700">increment_usage() RPC</text>
+      <text x="10" y="36" fill="#94A3B8" class="sans" font-size="10">Atomic call count increments</text>
+    </g>
+
+    <!-- Google Places API (New) -->
+    <g transform="translate(0, 245)">
+      <rect width="240" height="110" rx="12" fill="#0F172A" stroke="#F59E0B" stroke-width="1.5" />
+      <rect width="240" height="34" rx="12" fill="url(#boxGoogle)" />
+      <text x="120" y="22" fill="#FFFFFF" class="sans" font-size="12" font-weight="800" text-anchor="middle">
+        PLACES API (NEW)
+      </text>
+      <text x="14" y="56" fill="#FDE68A" class="mono" font-size="11">POST /places:searchText</text>
+      <text x="14" y="74" fill="#94A3B8" class="sans" font-size="10">X-Goog-FieldMask with details</text>
+      <text x="14" y="92" fill="#22D07A" class="sans" font-size="10">No separate Details API calls</text>
+    </g>
+
+    <!-- Claude AI & Apify -->
+    <g transform="translate(0, 370)">
+      <rect width="240" height="95" rx="12" fill="#0F172A" stroke="#C084FC" stroke-width="1.5" />
+      <rect width="240" height="34" rx="12" fill="url(#boxClaude)" />
+      <text x="120" y="22" fill="#FFFFFF" class="sans" font-size="12" font-weight="800" text-anchor="middle">
+        AI &amp; EXTENSION ACTORS
+      </text>
+      <text x="14" y="56" fill="#E879F9" class="mono" font-size="11">Claude 3.5 Sonnet</text>
+      <text x="14" y="74" fill="#94A3B8" class="sans" font-size="10">Apify (Instagram &amp; LinkedIn)</text>
+    </g>
+  </g>
+
+  <!-- ── CONNECTING ARROWS ─────────────────────────────── -->
+  <!-- Client to API -->
+  <g stroke="#38BDF8" stroke-width="2" fill="none">
+    <path d="M 330 330 L 410 330" marker-end="url(#arrow)" />
+    <circle cx="370" cy="330" r="3" fill="#38BDF8" />
+  </g>
+
+  <!-- API to Supabase -->
+  <g stroke="#22C55E" stroke-width="2" fill="none">
+    <path d="M 730 200 L 810 200" />
+    <circle cx="770" cy="200" r="3" fill="#22C55E" />
+  </g>
+
+  <!-- API to Places -->
+  <g stroke="#F59E0B" stroke-width="2" fill="none">
+    <path d="M 730 365 L 810 365" />
+    <circle cx="770" cy="365" r="3" fill="#F59E0B" />
+  </g>
+
+  <!-- API to Claude -->
+  <g stroke="#C084FC" stroke-width="2" fill="none">
+    <path d="M 730 450 L 810 450" />
+    <circle cx="770" cy="450" r="3" fill="#C084FC" />
+  </g>
+</svg>

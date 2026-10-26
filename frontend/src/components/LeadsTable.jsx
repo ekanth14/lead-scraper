@@ -62,9 +62,9 @@ export default function LeadsTable({ onLeadClick }) {
   }
 
   const getScoreBadge = (score) => {
-    if (score >= 70) return <span className="bg-emerald-500/10 text-emerald-400 px-2 py-1 rounded text-xs font-medium">Hot 🔥</span>
-    if (score >= 45) return <span className="bg-amber-500/10 text-amber-400 px-2 py-1 rounded text-xs font-medium">Warm</span>
-    return <span className="bg-rose-500/10 text-rose-400 px-2 py-1 rounded text-xs font-medium">Cold</span>
+    if (score >= 70) return <span className="bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded text-xs font-semibold flex items-center gap-1">Hot 🔥</span>
+    if (score >= 45) return <span className="bg-amber-500/10 text-amber-400 px-2 py-0.5 rounded text-xs font-semibold">Warm</span>
+    return <span className="bg-rose-500/10 text-rose-400 px-2 py-0.5 rounded text-xs font-semibold">Cold</span>
   }
 
   return (
@@ -136,14 +136,50 @@ export default function LeadsTable({ onLeadClick }) {
               <tr><td colSpan="6" className="p-8 text-center text-muted">Loading...</td></tr>
             ) : filteredLeads.length === 0 ? (
               <tr>
-                <td colSpan="6" className="p-8 text-center text-muted">
+                <td colSpan="6" className="p-10 text-center text-muted">
                   {leads.length === 0 ? (
-                    source === 'maps' ? "Search for local businesses by niche and city" :
-                    source === 'instagram' ? "Find businesses by hashtag using Apify" :
-                    source === 'linkedin' ? "Find companies and founders by keyword" :
-                    "Start scraping to find leads"
+                    <div className="flex flex-col items-center justify-center max-w-md mx-auto text-center py-4">
+                      <div className="w-14 h-14 rounded-2xl bg-surface border border-border flex items-center justify-center mb-3 shadow-inner">
+                        <span className="text-2xl animate-pulse">📡</span>
+                      </div>
+                      <h3 className="text-base font-semibold text-white mb-1">No Leads Scraped Yet</h3>
+                      <p className="text-xs text-muted mb-4">
+                        Search Google Maps for local businesses with automated scoring and website qualification.
+                      </p>
+                      <div className="flex flex-wrap justify-center gap-1.5 text-xs">
+                        <span className="text-muted/70 text-[11px] w-full mb-1">Try high-value search niches:</span>
+                        {['Architect in Bangalore', 'Interior Designer', 'Real Estate Builder', 'Construction Firm'].map((n) => (
+                          <button
+                            key={n}
+                            type="button"
+                            onClick={() => {
+                              const input = document.getElementById('niche-input')
+                              if (input) {
+                                input.value = n
+                                input.dispatchEvent(new Event('input', { bubbles: true }))
+                                input.focus()
+                              }
+                            }}
+                            className="bg-bg border border-border/80 hover:border-[var(--accent)] hover:text-white px-2.5 py-1 rounded-full text-muted transition-colors text-[11px]"
+                          >
+                            + {n}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
                   ) : (
-                    websiteFilter === 'no-website' ? "No leads without a website found" : "No leads with a website found"
+                    <div className="py-6">
+                      <p className="text-sm font-medium text-white mb-1">
+                        {websiteFilter === 'no-website' ? 'No leads without a website found' : 'No leads with a website found'}
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => setWebsiteFilter('all')}
+                        className="text-xs text-[var(--accent)] hover:underline mt-1"
+                      >
+                        Reset website filter
+                      </button>
+                    </div>
                   )}
                 </td>
               </tr>
@@ -218,7 +254,24 @@ export default function LeadsTable({ onLeadClick }) {
                     </span>
                   </td>
                   <td className="px-4 py-3">
-                    {getScoreBadge(lead.score || 0)}
+                    <div className="flex flex-col gap-1">
+                      <div className="flex items-center gap-1.5">
+                        {getScoreBadge(lead.score || 0)}
+                        <span className="text-[11px] font-semibold text-white/70">{lead.score || 0}</span>
+                      </div>
+                      <div className="h-1.5 w-16 bg-surface rounded-full overflow-hidden border border-border/40">
+                        <div
+                          className={`h-full rounded-full transition-all duration-300 ${
+                            (lead.score || 0) >= 70
+                              ? 'bg-emerald-400'
+                              : (lead.score || 0) >= 45
+                              ? 'bg-amber-400'
+                              : 'bg-rose-400'
+                          }`}
+                          style={{ width: `${Math.min(100, Math.max(10, lead.score || 0))}%` }}
+                        />
+                      </div>
+                    </div>
                   </td>
                   <td className="px-4 py-3 text-right">
                     <div className="flex items-center justify-end gap-2">
